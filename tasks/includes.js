@@ -253,9 +253,11 @@ module.exports = function(grunt) {
 
         // Try to locate the file through multiple includePath if array
         if (grunt.util.kindOf(opts.includePath) === 'array') {
-          opts.includePath.some(function(p) {
-            next = path.join(p, fileLocation);
-            return grunt.file.isFile(next);
+          var searchPaths = opts.includePath;
+          searchPaths.unshift(path.dirname(p));
+          searchPaths.some(function(p) {
+              next = path.join(p, fileLocation);
+              return grunt.file.isFile(next);
           });
 
           if (!next) {
